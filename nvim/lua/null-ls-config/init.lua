@@ -6,11 +6,11 @@ end
 local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
 
-local on_attach = function(client)
-	if client.resolved_capabilities.document_formatting then
-		vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
-	end
-end
+-- local on_attach = function(client)
+-- 	if client.resolved_capabilities.document_formatting then
+-- 		vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+-- 	end
+-- end
 
 local sources = {
 	-- formmating

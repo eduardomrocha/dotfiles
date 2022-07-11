@@ -1,6 +1,6 @@
 vim.cmd("filetype plugin indent on")
 vim.cmd([[set iskeyword+=-]])
-vim.cmd([[autocmd BufWritePre * :%s/\s\+$//e]])
+-- vim.cmd([[autocmd BufWritePre * :%s/\s\+$//e]])
 vim.cmd([[set shortmess+=c]])
 vim.cmd([[set formatoptions-=cro]])
 vim.opt.hidden = true

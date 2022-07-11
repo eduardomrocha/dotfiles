@@ -108,6 +108,8 @@ alias source-edit="nvim ~/.zshrc"
 alias source-apply="source ~/.zshrc"
 alias nv="nvim"
 alias gcover="go test -coverprofile=c.out && go tool cover -html=c.out"
+# alias hadolint="/bin/hadolint" # Ubuntu
+alias lg="lazygit"
 
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init --path)"
@@ -117,21 +119,16 @@ eval "$(pyenv virtualenv-init -)"
 # fuzzy search
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home"
-
 export PATH="/usr/local/sbin:$PATH"
-
-source $(brew --prefix nvm)/nvm.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export PATH="$HOME/go/bin:$PATH"
+export GOPATH="$HOME/go"
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+
+export PATH="$HOME/.cargo/bin:$PATH"
 
 export EDITOR=nvim
