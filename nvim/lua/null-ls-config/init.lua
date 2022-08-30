@@ -23,7 +23,7 @@ local sources = {
 	formatting.stylua, -- lua
 	formatting.markdownlint, -- markdown
 	formatting.black.with({ extra_args = { "--fast" } }), -- python
-	formatting.isort.with({ extra_args = { "--line-width", "88" } }), -- python
+	formatting.isort.with({ extra_args = { "--line-width", "120" } }), -- python
 	formatting.prettierd.with({
 		filetypes = {
 			"yaml",
@@ -40,10 +40,18 @@ local sources = {
 	diagnostics.jsonlint, -- json
 	diagnostics.luacheck, -- lua
 	diagnostics.markdownlint, -- markdown
-	diagnostics.flake8.with({ extra_args = { "--max-complexity", "10", "--max-line-length", "88", "--ignore=E203" } }), -- python
+	diagnostics.flake8.with({
+		extra_args = {
+			"--max-complexity",
+			"10",
+			"--max-line-length",
+			"120",
+			"--ignore=E203",
+		},
+	}), -- python
 	diagnostics.pydocstyle, -- python
 	diagnostics.mypy, -- python
-	diagnostics.vulture, -- python
+	-- diagnostics.vulture, -- python
 	diagnostics.yamllint, -- yaml
 }
 

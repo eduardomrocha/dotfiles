@@ -52,7 +52,7 @@ vim.cmd([[
       \ set tabstop=4 |
       \ set softtabstop=4 |
       \ set shiftwidth=4 |
-      \ set textwidth=88 |
+      \ set textwidth=120 |
 ]])
 
 vim.g.Hexokinase_ftEnabled = { "scss", "css", "html", "javascript", "javascriptreact", "typescript", "typescriptreact" }
