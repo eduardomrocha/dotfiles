@@ -116,9 +116,6 @@ eval "$(pyenv init --path)"
 #eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-# fuzzy search
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 export PATH="/usr/local/sbin:$PATH"
@@ -134,3 +131,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH=~/.local/bin/aws_completer:$PATH:~/.npm-global/bin
 
 export EDITOR=nvim
+
+# fuzzy search
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
