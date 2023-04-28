@@ -63,7 +63,7 @@ HIST_STAMPS="dd.mm.yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker colored-man-pages command-not-found golang httpie macos tmux)
+plugins=(git command-not-found tmux docker docker-compose fzf python)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -134,3 +134,13 @@ export EDITOR=nvim
 
 # fuzzy search
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+
+# Impel specifics
+# sts_suiterc_git_prompt=1
+# sts_suiterc_recommended=1
+# sts_suiterc_legacy=1
+# [[ -f ~/.suiterc ]] && source ~/.suiterc
+
+# for some reason WSL needs this line to start at home directory
+cd ~
