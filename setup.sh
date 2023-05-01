@@ -30,7 +30,7 @@ ask() {
 
 DOWNLOADS="$HOME/Downloads/"
 WSL="/proc/sys/fs/binfmt_misc/WSLInterop"
-DOTFILES="$(dirname "$0")"
+DOTFILES="$(dirname $(realpath "$0"))"
 
 WezTerm() {
   declare color=$1
@@ -54,7 +54,7 @@ WezTerm() {
 }
 
 copy_wezterm_config() {
-  ln -sf $DOTFILES/wezterm $HOME/.config/wezterm
+  ln -sfT $DOTFILES/wezterm $HOME/.config/wezterm
 }
 
 tmux() {
@@ -83,7 +83,7 @@ zsh() {
 
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # install zsh
-    sudo apt install zsh
+    sudo apt install -y zsh
   else
     # install zsh
     brew install zsh
@@ -101,13 +101,13 @@ copy_zsh_config() {
   ln -sf $DOTFILES/.p10k.zsh $HOME/.p10k.zsh
 }
 
-NeoVim() {
+Neovim() {
   declare color=$1
 
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     if [ -f "$WSL" ]; then
       # install dictionary (cmp-look dependency)
-      sudo apt install wamerican
+      sudo apt install -y wamerican
     fi
 
     # install neovim
@@ -137,7 +137,7 @@ declare -A colors=(
   [WezTerm]=$red
   [tmux]=$blue
   [zsh]=$green
-  [NeoVim]=$yellow
+  [Neovim]=$yellow
   [fzf]=$white
 )
 
@@ -145,18 +145,18 @@ declare -A configs=(
   [WezTerm]=copy_wezterm_config
   [tmux]=copy_tmux_config
   [zsh]=copy_zsh_config
-  [NeoVim]=copy_neovim_config
+  [Neovim]=copy_neovim_config
 )
 
-declare -ar packages=(
+declare -ar tools=(
   WezTerm
   tmux
   zsh
-  NeoVim
+  Neovim
   fzf
 )
 
-install_packages() {
+install_tools() {
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # install makedeb
     bash -ci "$(wget -qO - 'https://shlink.makedeb.org/install')"
@@ -166,15 +166,15 @@ install_packages() {
     fi
   fi
 
-  for package in "${packages[@]}";
+  for tool in "${tools[@]}";
   do
-    declare color=${colors[$package]}
-    if ask "${bold}Install $package?$reset" y $color; then
-      echo "$bold${color}Installing ${package}..."
-      ${package} $color
+    declare color=${colors[$tool]}
+    if ask "${bold}Install $tool?$reset" y $color; then
+      echo "$bold${color}Installing ${tool}..."
+      ${tool} $color
       tput sgr0
     else
-      echo "${color}Skiping $package$reset"
+      echo "${color}Skiping $tool$reset"
     fi
   done
 }
@@ -182,24 +182,24 @@ install_packages() {
 instructions() {
 cat <<- EOF
 $bold${magenta}Instructions:
-- Open NeoVim with "nv" to install plugins.
+- Open Neovim with "nv" to install plugins.
 - Start tmux and press prefix + I to install plugins.
 - Manually Download and Install FiraCode Nerd Font (https://www.nerdfonts.com/font-downloads).
 EOF
 }
 
 copy_configs() {
-  for package in "${packages[@]}";
+  for tool in "${tools[@]}";
   do
-    [ ! "${configs[$package]+1}" ] && continue
+    [ ! "${configs[$tool]+1}" ] && continue
 
-    declare color=${colors[$package]}
-    if ask "${bold}Copy $package config?$reset" y $color; then
-      echo "${color}Copying ${package} config..."
-      ${configs[$package]}
+    declare color=${colors[$tool]}
+    if ask "${bold}Copy $tool config?$reset" y $color; then
+      echo "${color}Copying ${tool} config..."
+      ${configs[$tool]}
       tput sgr0
     else
-      echo "${color}Skiping $package config...$reset"
+      echo "${color}Skiping $tool config...$reset"
     fi
   done
 
@@ -211,11 +211,12 @@ copy_configs() {
 usage() {
 cat <<- EOF
 $green${bold}Usage:
-    $(basename "$0") [ all | packages | configs ]
+    $(basename "$0") [ all | tools | configs ]
 
-    all       Install packages and copy configs
-    packages  Install packages but do not copy configs
-    configs   Only copy configs$reset
+    all       Install tools and copy configurations.
+    tools     Install tools, but do not copy configurations.
+    configs   Copy configurations.$reset
+
 EOF
 }
 
@@ -224,7 +225,7 @@ main() {
 
   if [[ "$@" == all ]]; then
     all=1
-  elif [[ "$@" == packages ]]; then
+  elif [[ "$@" == tools ]]; then
     install=1
   elif [[ "$@" == configs ]]; then
     config=1
@@ -239,14 +240,14 @@ main() {
   }
 
   (( all )) && {
-    install_packages
+    install_tools
     copy_configs
     instructions
     return 1
   }
 
   (( install )) && {
-    install_packages
+    install_tools
     instructions
     return 1
   }

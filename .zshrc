@@ -113,7 +113,6 @@ alias lg="lazygit"
 
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init --path)"
-#eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
@@ -134,7 +133,6 @@ export EDITOR=nvim
 
 # fuzzy search
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f ~/.fzf.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 
 # Impel specifics
 # sts_suiterc_git_prompt=1
@@ -142,5 +140,6 @@ export EDITOR=nvim
 # sts_suiterc_legacy=1
 # [[ -f ~/.suiterc ]] && source ~/.suiterc
 
-# for some reason WSL needs this line to start at home directory
-cd ~
+# WSL
+# [ -f ~/.fzf.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+cd ~ # for some reason WSL needs this line to start at home directory
