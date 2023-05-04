@@ -9,16 +9,12 @@ fi
 #    tmux a || tmux; exit
 # fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="minimal"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -96,13 +92,6 @@ export LANG=en_US.UTF-8
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Vituralenvwrapper
-#export WORKON_HOME=$HOME/.virtualenvs
-#export PROJECT_HOME=$HOME/.dev
-#export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-#export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
-#source /usr/local/bin/virtualenvwrapper.sh
-
 # aliases
 alias source-edit="nvim ~/.zshrc"
 alias source-apply="source ~/.zshrc"
@@ -139,7 +128,8 @@ export EDITOR=nvim
 # sts_suiterc_recommended=1
 # sts_suiterc_legacy=1
 # [[ -f ~/.suiterc ]] && source ~/.suiterc
+# source ~/suite/.env/bin/activate
 
 # WSL
 # [ -f ~/.fzf.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-cd ~ # for some reason WSL needs this line to start at home directory
+# cd ~ # for some reason WSL needs this line to start at home directory
