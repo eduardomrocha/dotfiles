@@ -34,24 +34,24 @@ return {
 	},
 	keys = {
 		{
-			key = "c",
+			key = "C",
 			mods = "CTRL",
 			action = wezterm.action_callback(function(window, pane)
 				local sel = window:get_selection_text_for_pane(pane)
 				if not sel or sel == "" then
-					window:perform_action(wezterm.action.SendKey({ key = "c", mods = "CTRL" }), pane)
+					window:perform_action(wezterm.action.SendKey({ key = "C", mods = "CTRL" }), pane)
 				else
 					window:perform_action(wezterm.action({ CopyTo = "ClipboardAndPrimarySelection" }), pane)
 				end
 			end),
 		},
 		{
-			key = "v",
+			key = "V",
 			mods = "CTRL",
 			action = wezterm.action.PasteFrom("Clipboard"),
 		},
 		{
-			key = "v",
+			key = "V",
 			mods = "CTRL",
 			action = wezterm.action.PasteFrom("PrimarySelection"),
 		},

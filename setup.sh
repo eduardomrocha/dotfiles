@@ -133,12 +133,24 @@ fzf() {
   ~/.fzf/install
 }
 
+lazygit() {
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    cd $DOWNLOADS
+    git clone 'https://mpr.makedeb.org/lazygit'
+    cd lazygit/
+    makedeb -si
+  else
+    brew install lazygit
+  fi
+}
+
 declare -A colors=(
   [WezTerm]=$red
   [tmux]=$blue
   [zsh]=$green
   [Neovim]=$yellow
   [fzf]=$white
+  [lazygit]=$red
 )
 
 declare -A configs=(
