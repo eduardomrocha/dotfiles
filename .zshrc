@@ -124,11 +124,11 @@ export EDITOR=nvim
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Impel specifics
-# sts_suiterc_git_prompt=1
-# sts_suiterc_recommended=1
-# sts_suiterc_legacy=1
-# [[ -f ~/.suiterc ]] && source ~/.suiterc
-# source ~/suite/.env/bin/activate
+sts_suiterc_git_prompt=1
+sts_suiterc_recommended=1
+sts_suiterc_legacy=1
+[[ -f ~/.suiterc ]] && source ~/.suiterc
+source ~/suite/.env/bin/activate
 
 # WSL
 # [ -f ~/.fzf.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
