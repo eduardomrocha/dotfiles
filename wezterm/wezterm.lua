@@ -13,7 +13,7 @@ return {
 	color_scheme = "Ayu Mirage",
 	-- Font configuration
 	-- https://wezfurlong.org/wezterm/config/fonts.html
-	font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Medium", stretch = "Normal", style = "Normal" }),
+	font = wezterm.font("GeistMono Nerd Font Mono", { weight = "Medium", stretch = "Normal", style = "Normal" }),
 	font_size = 12.0,
 	-- Cursor style
 	default_cursor_style = "BlinkingUnderline",

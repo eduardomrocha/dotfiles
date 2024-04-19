@@ -117,6 +117,7 @@ export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 export PATH="$HOME/.cargo/bin:$PATH"
 
 export PATH=~/.local/bin/aws_completer:$PATH:~/.npm-global/bin
+export PATH="$HOME/.local/bin:$PATH"
 
 export EDITOR=nvim
 
