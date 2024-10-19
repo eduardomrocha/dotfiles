@@ -123,3 +123,5 @@ export EDITOR=nvim
 
 # fuzzy search
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# eval "$(starship init zsh)"
