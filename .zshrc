@@ -127,11 +127,11 @@ export PATH=~/.local/bin:$PATH
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Impel specifics
-sts_suiterc_git_prompt=1
-sts_suiterc_recommended=1
-sts_suiterc_legacy=1
-[[ -f ~/.suiterc ]] && source ~/.suiterc
-source ~/suite/.env/bin/activate
+# sts_suiterc_git_prompt=1
+# sts_suiterc_recommended=1
+# sts_suiterc_legacy=1
+# [[ -f ~/.suiterc ]] && source ~/.suiterc
+# source ~/suite/.env/bin/activate
 
 # WSL
 # [ -f ~/.fzf.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
@@ -140,3 +140,5 @@ source ~/suite/.env/bin/activate
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# export GEMINI_API_KEY=<GEMINI_KEY>
