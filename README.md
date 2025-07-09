@@ -1,46 +1,156 @@
-# Usage
+# Declarative Development Environment with Nix
 
-    ./setup.sh [ all | tools | configs ]
+This repository contains my personal development environment configuration, managed declaratively with Nix, Home Manager, and Nix Flakes. The goal is to have a 100% reproducible setup on any Linux, macOS, or WSL machine using a single set of files.
 
-    all       Install tools and copy configurations.
-    tools     Install tools, but do not copy configurations.
-    configs   Copy configurations.
+## ✨ Features
 
-## What it will install
+* **Declarative:** The entire configuration (packages, dotfiles, environment variables) is defined as code.
+* **Reproducible:** Guarantees that the same environment is created on any machine. No more "it works on my machine" issues.
+* **Multi-Profile:** Supports distinct configurations for **Work** and **Personal** environments, selected at activation time.
+* **Secret Management:** Uses [sops-nix](https://github.com/Mic92/sops-nix) to securely manage API keys and other secrets, encrypted within the Git repository.
+* **Unified:** The same codebase works on Ubuntu, WSL (Windows), and macOS.
 
-- **makedeb**: If you are using a Debian based OS it will install makedeb, a
-simplicity-focused packaging tool for Debian archives. makedeb takes everything
-developers love about targeting Debian/Ubuntu based distributions, and makes
-the packaging easier, more enjoyable, and more maintainable.
-- **WezTerm**: A powerful cross-platform terminal emulator and multiplexer
-written by  [](https://github.com/wez/)[@wez](https://github.com/wez "GitHub
-User: wez")  and implemented in Rust
-- **tmux**: A terminal multiplexer. It lets you switch easily between several
-programs in one terminal, detach them (they keep running in the background)
-and reattach them to a different terminal.
-- **tpm**: A Tmux Plugin Manager.
-- **zsh**: A shell designed for interactive use, although it is also a powerful
-scripting language.
-- **Oh My Zsh**: A delightful, open source, community-driven framework for
-managing your Zsh configuration.
-- **Powerlevel10k**: A theme for Zsh. It emphasizes speed, flexibility and
-out-of-the-box experience.
-- **Neovim**: A project that seeks to aggressively refactor Vim in order to:
-  - Simplify maintenance and encourage
-  - Split the work between multiple developers
-  - Enable advanced UIs without modifications to the core
-  - Maximize extensibility
+---
 
-- **AstroNvim**: An aesthetic and feature-rich neovim config that is extensible
-and easy to use with a great set of plugins.
-- **fzf**: A general-purpose command-line fuzzy finder.
+## 🚀 Setup on a New Machine
 
-## What it will configure
+Follow these steps to deploy this environment on a new computer.
 
-It will copy the configuration files for the following tools:
+### Step 1: Initial Dependencies
 
-- **WezTerm**
-- **tmux**
-- **zsh**
-- **Powerlevel10k**
-- **Neovim (AstroNvim)**
+On a clean Ubuntu/Debian installation, you might need `git` and `curl`.
+
+```bash
+sudo apt update && sudo apt install -y git curl
+```
+
+### Step 2: Install Nix
+
+Nix is the foundation of the entire system.
+
+```bash
+sh <(curl -L [https://nixos.org/nix/install](https://nixos.org/nix/install)) --daemon
+```
+After the installation is complete, **close and reopen your terminal** to load Nix into your environment.
+
+### Step 3: Enable Nix Flakes
+
+Our configuration uses Flakes, the modern Nix packaging system. Enable it with the following commands:
+
+```bash
+mkdir -p ~/.config/nix
+echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+```
+
+### Step 4: Clone This Repository
+
+Clone this repository to your local machine.
+
+```bash
+git clone git@github.com:eduardomrocha/dotfiles.git
+cd dotfiles
+```
+
+### Step 5: Configure Secrets with SOPS (First-Time Setup)
+
+Your secrets (API keys, etc.) are encrypted. To decrypt them, the new machine needs your private `age` key.
+
+#### Case A: You Already Have Your `key.txt` File
+
+If you have previously generated your `age` key, simply copy the `key.txt` file (which you have stored in a safe place) into the root of this `dotfiles` folder.
+
+#### Case B: This Is Your First Setup (or You Lost the Key)
+
+You will need to generate a new key and re-encrypt your secrets.
+
+1.  **Install `sops` and `age` temporarily:**
+    ```bash
+    nix-shell -p sops age
+    ```
+
+2.  **Generate a new key:**
+    ```bash
+    age-keygen -o key.txt
+    ```
+    **IMPORTANT:** Back up this `key.txt` file in an extremely secure location (password manager, vault, etc.) and add it to your `.gitignore` to NEVER commit it to Git.
+
+3.  **Create the `secrets.yaml` file:** Create the file with your API keys and the newly generated `age` public key. Use the template below and fill in your data.
+
+    *Template `secrets.yaml`:*
+    ```yaml
+    GEMINI_API_KEY: "your_value_here"
+    BRAVE_API_KEY: "your_value_here"
+    sops:
+      age:
+        - recipient: <PASTE_YOUR_PUBLIC_AGE_KEY_HERE>
+          enc: ""
+      creation_rules:
+        - path_regex: ".*"
+          key_groups:
+            - age:
+                - <PASTE_YOUR_PUBLIC_AGE_KEY_HERE>
+    ```
+
+4.  **Encrypt the file:**
+    ```bash
+    sops --encrypt --in-place secrets.yaml
+    ```
+5.  Exit the nix-shell by typing `exit`.
+
+### Step 6: Activate the Environment
+
+With everything in place, use the `Makefile` to build and activate the desired profile for this machine.
+
+* For a **work machine**:
+    ```bash
+    make work
+    ```
+* For a **personal machine**:
+    ```bash
+    make personal
+    ```
+
+**Note:** The first time you run this command, it will take a **long time**. Nix is downloading and building all the tools from scratch. Subsequent activations will be much faster.
+
+### Step 7: Post-Installation
+
+1.  **Open a new terminal.** This is crucial to load the new environment with Zsh, Powerlevel10k, and all your tools.
+
+2.  **Initialize the toolchains (one-time setup):**
+    * **Rust:** `rustup default stable`
+    * **Node.js:** `fnm install --lts` and then `fnm default lts-latest`
+
+Your environment is now ready!
+
+---
+
+## 💻 Daily Usage
+
+The `Makefile` in the project root simplifies all common operations.
+
+| Command | Description |
+| :--- | :--- |
+| `make help` | Shows all available commands. |
+| `make personal` | Activates or applies changes to the Personal profile. |
+| `make work` | Activates or applies changes to the Work profile. |
+| `make secrets` | Securely opens the secrets file for editing. |
+| `make update` | Updates Nix dependencies (packages, Home Manager, etc.). |
+| `make clean` | Cleans up old package versions to free up disk space. |
+
+The general workflow is:
+1.  Make a change to a `.nix` file.
+2.  Run `make personal` or `make work` to apply it.
+3.  `git commit` and `git push` to save your changes.
+
+## 🔑 Secret Management (SOPS)
+
+To add or modify secrets (like API keys):
+
+1.  Run the command:
+    ```bash
+    make secrets
+    ```
+2.  `sops` will decrypt `secrets.yaml` and open it in your default editor.
+3.  Make your changes, save, and close the editor. `sops` will **automatically re-encrypt the file** upon saving.
+4.  Commit the updated (and still encrypted) `secrets.yaml` file.
+5.  Run `make personal` or `make work` to load the new environment variables into your system.
