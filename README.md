@@ -29,7 +29,7 @@ sudo apt update && sudo apt install -y git curl
 Nix is the foundation of the entire system.
 
 ```bash
-sh <(curl -L [https://nixos.org/nix/install](https://nixos.org/nix/install)) --daemon
+sh <(curl -L https://nixos.org/nix/install) --daemon
 ```
 After the installation is complete, **close and reopen your terminal** to load Nix into your environment.
 

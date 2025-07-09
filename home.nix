@@ -16,26 +16,28 @@ in
   home.stateVersion = "24.05";
 
   # Point to the default secrets file for sops
-  sops.defaultSopsFile = ./secrets.yaml;
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+  };
 
   # List of packages to install
   home.packages = with pkgs; [
     # wezterm is removed from here as it's now managed conditionally below
     tmux
     zsh
-    neovim
     fzf
     lazygit
     git
     ripgrep
-    (nerdfonts.override { fonts = [ "GeistMono" ]; })
-    wamerican # Dictionary dependency for nvim-cmp
+    nerd-fonts.geist-mono
+    aspellDicts.en # Dictionary dependency for nvim-cmp
 
     # Dev Tools
     go
     rustup
     python3
     pipx
+    fnm
   ];
 
   # Environment Variables
@@ -44,16 +46,20 @@ in
     LANG = "en_US.UTF-8";
     EDITOR = "nvim";
     GOPATH = "${config.home.homeDirectory}/go";
+
+    # For the 'personal' profile, it gets the secret. For 'work', it gets an empty string.
+    GEMINI_API_KEY = if profile == "personal"
+                     then "${config.sops.secrets.GEMINI_API_KEY.value}"
+                     else "";
+    BRAVE_API_KEY = if profile == "personal"
+                    then "${config.sops.secrets.BRAVE_API_KEY.value}"
+                    else "";
+
   } // lib.mkIf (profile == "work") {
     # Work-specific variables
     sts_suiterc_git_prompt = "1";
     sts_suiterc_recommended = "1";
     sts_suiterc_legacy = "1";
-  } // lib.mkIf (profile == "personal") {
-    # Personal-only secret variables
-    # sops-nix will replace these with the decrypted values upon activation
-    GEMINI_API_KEY = "${sops.secrets.GEMINI_API_KEY.value}";
-    BRAVE_API_KEY = "${sops.secrets.BRAVE_API_KEY.value}";
   };
 
   # Manages dotfiles in the home directory's root
@@ -68,7 +74,6 @@ in
     home-manager.enable = true;
     fzf = { enable = true; enableZshIntegration = true; };
     neovim = { enable = true; };
-    fnm = { enable = true; };
 
     git = {
       enable = true;
@@ -86,14 +91,12 @@ in
 
     zsh = {
       enable = true;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       enableCompletion = true;
-      dots = true;
       history = {
         size = 10000;
         save = 10000;
         extended = true;
-        timestampFormat = "%d.%m.%Y ";
       };
       shellAliases = {
         nix-edit = "nvim ~/dotfiles/home.nix"; # Adjust path if needed
@@ -106,11 +109,18 @@ in
       oh-my-zsh = {
         enable = true;
         theme = "powerlevel10k/powerlevel10k";
-        update.frequency = 7;
         plugins = [ "git" "command-not-found" "tmux" "docker" "docker-compose" "fzf" "python" ];
       };
       # Extra initialization block for profile-specific commands
       initExtra = lib.mkIf (profile == "work") ''
+        # Oh My Zsh settings
+        COMPLETION_WAITING_DOTS="true"
+        export UPDATE_ZSH_DAYS=7
+        export HIST_TIME_FORMAT="%d.%m.%Y "
+
+        # FNM (Fast Node Manager) initialization
+        eval "$(fnm env --use-on-cd)"
+
         # Settings that only run on the "work" profile
         if [[ -f "$HOME/.suiterc" ]]; then
           source "$HOME/.suiterc"

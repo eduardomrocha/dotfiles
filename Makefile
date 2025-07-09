@@ -41,7 +41,7 @@ personal:
 ## (switch) [INTERNAL] Apply the Home Manager configuration to the current system.
 switch:
 	@echo "🔒 Applying configuration for profile: \033[33m$(PROFILE)\033[0m"
-	SOPS_AGE_KEY_FILE=$(AGE_KEY_FILE) home-manager switch --flake .#$(USERNAME)-$(PROFILE)
+	SOPS_AGE_KEY_FILE=$(AGE_KEY_FILE) nix run home-manager -- switch --flake .#$(USERNAME)-$(PROFILE)
 	@echo "✅ Configuration applied successfully!"
 
 ## (update) Update flake dependencies (nixpkgs, home-manager, etc.).
