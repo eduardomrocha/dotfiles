@@ -112,15 +112,36 @@ With everything in place, use the `Makefile` to build and activate the desired p
 
 **Note:** The first time you run this command, it will take a **long time**. Nix is downloading and building all the tools from scratch. Subsequent activations will be much faster.
 
-### Step 7: Post-Installation
+### Step 7: Set Zsh as Default Shell (One-Time Action)
 
-1.  **Open a new terminal.** This is crucial to load the new environment with Zsh, Powerlevel10k, and all your tools.
+Home Manager installs Zsh and configures it, but for security reasons, it does not change your user's default login shell. You must do this manually once per machine.
 
-2.  **Initialize the toolchains (one-time setup):**
+1.  **Find the path to the Zsh installed by Nix.**
+    ```bash
+    ZSH_PATH=$(which zsh)
+    ```
+
+2.  **Add the new shell to the list of allowed shells.** (This is required on Linux/WSL). This command will ask for your `sudo` password.
+    ```bash
+    echo $ZSH_PATH | sudo tee -a /etc/shells
+    ```
+
+3.  **Change your user's default shell.** This will ask for your user password.
+    ```bash
+    chsh -s $ZSH_PATH
+    ```
+
+4.  **Verify the change.** **Close and reopen your terminal completely.** You should now be greeted by the Powerlevel10k prompt. You can confirm by running `echo $SHELL`, which should show the path to your Nix-managed Zsh.
+
+### Step 8: Final Post-Installation Setup
+
+After opening your new Zsh terminal:
+
+1.  **Initialize the toolchains (one-time setup):**
     * **Rust:** `rustup default stable`
     * **Node.js:** `fnm install --lts` and then `fnm default lts-latest`
 
-Your environment is now ready!
+Your environment is now fully configured and operational!
 
 ---
 
@@ -142,6 +163,8 @@ The general workflow is:
 2.  Run `make personal` or `make work` to apply it.
 3.  `git commit` and `git push` to save your changes.
 
+---
+
 ## 🔑 Secret Management (SOPS)
 
 To add or modify secrets (like API keys):
@@ -154,3 +177,9 @@ To add or modify secrets (like API keys):
 3.  Make your changes, save, and close the editor. `sops` will **automatically re-encrypt the file** upon saving.
 4.  Commit the updated (and still encrypted) `secrets.yaml` file.
 5.  Run `make personal` or `make work` to load the new environment variables into your system.
+
+---
+
+### A Note on Home Manager Installation
+
+You might notice that there is no separate step to "install Home Manager". This is by design. Because we are using Nix Flakes, Home Manager is defined as a direct dependency in our `flake.nix` file. The `make work` command (which runs `home-manager switch --flake ...`) takes care of fetching and running the correct version of Home Manager automatically. This is one of the great advantages of using Flakes, as it makes the entire setup more self-contained and reproducible.
