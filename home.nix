@@ -2,11 +2,6 @@
 # We accept the 'profile' and 'lib' arguments from flake.nix here
 { config, pkgs, lib, profile, ... }:
 
-let
-  # Variable to detect if we are running inside WSL.
-  # It will be 'true' if the system is Linux AND the WSL-specific file exists.
-  isWSL = pkgs.stdenv.isLinux && (builtins.pathExists /proc/sys/fs/binfmt_misc/WSLInterop);
-in
 {
   # Set user and home directory
   home.username = "eduardo";
@@ -22,7 +17,6 @@ in
 
   # List of packages to install
   home.packages = with pkgs; [
-    # wezterm is removed from here as it's now managed conditionally below
     tmux
     zsh
     zsh-powerlevel10k
@@ -40,7 +34,11 @@ in
     python3
     pipx
     fnm
+    gnumake
+    gcc
   ];
+
+  fonts.fontconfig.enable = true;
 
   # Environment Variables
   home.sessionVariables = {
@@ -67,8 +65,21 @@ in
   # Manages dotfiles in the home directory's root
   home.file = {
     ".p10k.zsh" = { source = ./.p10k.zsh; };
-    ".tmux.conf" = { source = ./.tmux.conf; };
     ".gitmessage" = { source = ./.gitmessage; };
+
+    ".config/nvim" = {
+      source = ./config/nvim;
+      recursive = true;
+    };
+
+    ".config/wezterm" = {
+      source = ./config/wezterm;
+      recursive = true;
+    };
+
+    ".tmux.conf" = {
+      source = "${config.xdg.configHome}/tmux/tmux.conf";
+    };
   };
 
   # Configuration for specific programs
@@ -86,9 +97,83 @@ in
       extraConfig = { commit.template = "${config.home.homeDirectory}/.gitmessage"; };
     };
 
-    # wezterm is now conditional
-    wezterm = lib.mkIf (!isWSL) {
+    tmux = {
       enable = true;
+      shell = "${pkgs.zsh}/bin/zsh";
+      terminal = "tmux-256color";
+      prefix = "C-n";
+      mouse = true;
+      plugins = with pkgs.tmuxPlugins; [
+        {
+          plugin = dracula;
+          extraConfig = ''
+            set -g @dracula-plugins "time"
+            set -g @dracula-show-flags true
+            set -g @dracula-show-left-icon "#S"
+            set -g @dracula-show-timezone false
+            set -g @dracula-show-location false
+            set -g @dracula-show-battery-status false
+            set -g @dracula-network-bandwidth-show-interface false
+            set -g @dracula-day-month true
+            set -g @dracula-military-time true
+          '';
+        }
+        {
+          plugin = resurrect;
+          extraConfig = ''
+            set -g @resurrect-strategy-nvim 'session'
+          '';
+        }
+        sensible
+      ];
+      extraConfig = ''
+        # Unbind default prefix since we changed it
+        unbind C-b
+
+        # Reload configuration file (path updated to where Home Manager places it)
+        unbind r
+        bind r source-file ~/.config/tmux/tmux.conf \; display "Configuration reloaded!"
+
+        # Redefine splitting shortcuts
+        bind | split-window -h
+        bind - split-window -v
+
+        # Titles (window number, program name, active (or not)
+        set-option -g set-titles on
+        set-option -g set-titles-string '#W #T'
+
+        # vi-mode for copy mode
+        set-window-option -g mode-keys vi
+        bind-key -T copy-mode-vi 'v' send -X begin-selection
+        bind-key -T copy-mode-vi 'y' send -X copy-selection-and-cancel
+
+        # resize panes commands
+        bind -r H resize-pane -L 1
+        bind -r J resize-pane -D 1
+        bind -r K resize-pane -U 1
+        bind -r L resize-pane -R 1
+
+        # renumber window on close
+        set-option -g renumber-windows on
+        # dont let tmux rename window
+        set-option -g allow-rename off
+
+        # Vim-aware pane navigation
+        is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+        is_fzf="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?fzf$'"
+        bind -n C-h run "($is_vim && tmux send-keys C-h) || tmux select-pane -L"
+        bind -n C-j run "($is_vim && tmux send-keys C-j)  || ($is_fzf && tmux send-keys C-j) || tmux select-pane -D"
+        bind -n C-k run "($is_vim && tmux send-keys C-k) || ($is_fzf && tmux send-keys C-k)  || tmux select-pane -U"
+        bind -n C-l run  "($is_vim && tmux send-keys C-l) || tmux select-pane -R"
+        bind-key -n 'C-\' if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
+
+        # Terminal features for true color and italics
+        set-option -gsa terminal-features '*:Tc'
+        set-option -gsa terminal-features '*:RGB'
+        set -as terminal-overrides ',xterm*:sitm=\E[3m'
+        set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
+        set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
+      '';
     };
 
     zsh = {
@@ -146,15 +231,5 @@ in
           fi
         '' else "");
     };
-  };
-
-  # Manages dotfiles in ~/.config
-  xdg.configFile = {
-    # wezterm config is now conditional
-    "wezterm" = lib.mkIf (!isWSL) {
-      source = ./config/wezterm;
-    };
-
-    "nvim".source = ./config/nvim;
   };
 }
