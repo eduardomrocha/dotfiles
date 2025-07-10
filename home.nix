@@ -25,8 +25,10 @@ in
     # wezterm is removed from here as it's now managed conditionally below
     tmux
     zsh
+    zsh-powerlevel10k
     fzf
     lazygit
+    lazydocker
     git
     ripgrep
     nerd-fonts.geist-mono
@@ -108,27 +110,41 @@ in
       };
       oh-my-zsh = {
         enable = true;
-        theme = "powerlevel10k/powerlevel10k";
-        plugins = [ "git" "command-not-found" "tmux" "docker" "docker-compose" "fzf" "python" ];
+        theme = "robbyrussell";
+        plugins = [
+          "git"
+          "command-not-found"
+          "tmux"
+          "docker"
+          "docker-compose"
+          "fzf"
+          "python"
+        ];
       };
       # Extra initialization block for profile-specific commands
-      initExtra = lib.mkIf (profile == "work") ''
-        # Oh My Zsh settings
-        COMPLETION_WAITING_DOTS="true"
-        export UPDATE_ZSH_DAYS=7
-        export HIST_TIME_FORMAT="%d.%m.%Y "
+      initContent =
+        ''
+          # Oh My Zsh settings
+          COMPLETION_WAITING_DOTS="true"
+          export UPDATE_ZSH_DAYS=7
+          export HIST_TIME_FORMAT="%d.%m.%Y "
 
-        # FNM (Fast Node Manager) initialization
-        eval "$(fnm env --use-on-cd)"
+          # FNM (Fast Node Manager) initialization
+          eval "$(fnm env --use-on-cd)"
 
-        # Settings that only run on the "work" profile
-        if [[ -f "$HOME/.suiterc" ]]; then
-          source "$HOME/.suiterc"
-        fi
-        if [[ -f "$HOME/suite/.env/bin/activate" ]]; then
-          source "$HOME/suite/.env/bin/activate"
-        fi
-      '';
+          source "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme"
+          # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+          [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+        ''
+        + (if profile == "work" then ''
+          # Settings that only run on the "work" profile
+          if [[ -f "$HOME/.suiterc" ]]; then
+            source "$HOME/.suiterc"
+          fi
+          if [[ -f "$HOME/suite/.env/bin/activate" ]]; then
+            source "$HOME/suite/.env/bin/activate"
+          fi
+        '' else "");
     };
   };
 
