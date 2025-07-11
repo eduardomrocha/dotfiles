@@ -82,6 +82,27 @@
     };
   };
 
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+    tmux = {
+      enable = true;
+      flavor = "mocha";
+      extraConfig = ''
+        set -g @catppuccin_window_default_text " #{window_name}"
+        set -g @catppuccin_window_current_text " #{window_name}"
+        set -g @catppuccin_status_left_separator "█"
+
+        set -g @catppuccin_status_modules_left ""
+        set -g @catppuccin_status_modules_right "session"
+
+        set -g @catppuccin_status_right_separator "█ "
+        set -g @catppuccin_status_fill "all"
+        set -g @catppuccin_status_connect_separator "yes"
+      '';
+    };
+  };
+
   # Configuration for specific programs
   programs = {
     home-manager.enable = true;
@@ -104,20 +125,6 @@
       prefix = "C-n";
       mouse = true;
       plugins = with pkgs.tmuxPlugins; [
-        {
-          plugin = dracula;
-          extraConfig = ''
-            set -g @dracula-plugins "time"
-            set -g @dracula-show-flags true
-            set -g @dracula-show-left-icon "#S"
-            set -g @dracula-show-timezone false
-            set -g @dracula-show-location false
-            set -g @dracula-show-battery-status false
-            set -g @dracula-network-bandwidth-show-interface false
-            set -g @dracula-day-month true
-            set -g @dracula-military-time true
-          '';
-        }
         {
           plugin = resurrect;
           extraConfig = ''

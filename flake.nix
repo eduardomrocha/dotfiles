@@ -12,9 +12,12 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin = {
+      url = "github:catppuccin/nix";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, ... }:
+  outputs = { self, nixpkgs, home-manager, sops-nix, catppuccin, ... }:
     let
       system = "x86_64-linux";
       username = "eduardo";
@@ -28,6 +31,7 @@
         modules = [
           ./home.nix
           sops-nix.homeManagerModules.sops
+          catppuccin.homeModules.catppuccin
         ];
       };
 
