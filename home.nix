@@ -10,6 +10,10 @@
   # This is required for Home Manager to work correctly
   home.stateVersion = "24.05";
 
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
+
   # Point to the default secrets file for sops
   sops = {
     defaultSopsFile = ./secrets.yaml;
@@ -75,10 +79,6 @@
     ".config/wezterm" = {
       source = ./config/wezterm;
       recursive = true;
-    };
-
-    ".tmux.conf" = {
-      source = "${config.xdg.configHome}/tmux/tmux.conf";
     };
   };
 
