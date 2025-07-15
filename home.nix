@@ -70,6 +70,7 @@
   home.file = {
     ".p10k.zsh" = { source = ./.p10k.zsh; };
     ".gitmessage" = { source = ./.gitmessage; };
+    ".tmux.conf" = { source = ./.tmux.conf; };
 
     ".config/nvim" = {
       source = ./config/nvim;
@@ -79,27 +80,6 @@
     ".config/wezterm" = {
       source = ./config/wezterm;
       recursive = true;
-    };
-  };
-
-  catppuccin = {
-    enable = true;
-    flavor = "mocha";
-    tmux = {
-      enable = true;
-      flavor = "mocha";
-      extraConfig = ''
-        set -g @catppuccin_window_default_text " #{window_name}"
-        set -g @catppuccin_window_current_text " #{window_name}"
-        set -g @catppuccin_status_left_separator "█"
-
-        set -g @catppuccin_status_modules_left ""
-        set -g @catppuccin_status_modules_right "session"
-
-        set -g @catppuccin_status_right_separator "█ "
-        set -g @catppuccin_status_fill "all"
-        set -g @catppuccin_status_connect_separator "yes"
-      '';
     };
   };
 
@@ -116,71 +96,6 @@
                   then "eduardomenezesr@gmail.com"
                   else "eduardo.nearsure@impel.ai";
       extraConfig = { commit.template = "${config.home.homeDirectory}/.gitmessage"; };
-    };
-
-    tmux = {
-      enable = true;
-      shell = "${pkgs.zsh}/bin/zsh";
-      terminal = "tmux-256color";
-      prefix = "C-n";
-      mouse = true;
-      plugins = with pkgs.tmuxPlugins; [
-        {
-          plugin = resurrect;
-          extraConfig = ''
-            set -g @resurrect-strategy-nvim 'session'
-          '';
-        }
-        sensible
-      ];
-      extraConfig = ''
-        # Unbind default prefix since we changed it
-        unbind C-b
-
-        # Reload configuration file (path updated to where Home Manager places it)
-        unbind r
-        bind r source-file ~/.config/tmux/tmux.conf \; display "Configuration reloaded!"
-
-        # Redefine splitting shortcuts
-        bind | split-window -h
-        bind - split-window -v
-
-        # Titles (window number, program name, active (or not)
-        set-option -g set-titles on
-        set-option -g set-titles-string '#W #T'
-
-        # vi-mode for copy mode
-        set-window-option -g mode-keys vi
-        bind-key -T copy-mode-vi 'v' send -X begin-selection
-        bind-key -T copy-mode-vi 'y' send -X copy-selection-and-cancel
-
-        # resize panes commands
-        bind -r H resize-pane -L 1
-        bind -r J resize-pane -D 1
-        bind -r K resize-pane -U 1
-        bind -r L resize-pane -R 1
-
-        # renumber window on close
-        set-option -g renumber-windows on
-        # dont let tmux rename window
-        set-option -g allow-rename off
-
-        # Vim-aware pane navigation
-        is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
-        is_fzf="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?fzf$'"
-        bind -n C-h run "($is_vim && tmux send-keys C-h) || tmux select-pane -L"
-        bind -n C-j run "($is_vim && tmux send-keys C-j)  || ($is_fzf && tmux send-keys C-j) || tmux select-pane -D"
-        bind -n C-k run "($is_vim && tmux send-keys C-k) || ($is_fzf && tmux send-keys C-k)  || tmux select-pane -U"
-        bind -n C-l run  "($is_vim && tmux send-keys C-l) || tmux select-pane -R"
-        bind-key -n 'C-\' if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
-
-        # Terminal features for true color and italics
-        set-option -gsa terminal-features '*:Tc'
-        set-option -gsa terminal-features '*:RGB'
-        set -as terminal-overrides ',xterm*:sitm=\E[3m'
-        set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
-        set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
-      '';
     };
 
     zsh = {
