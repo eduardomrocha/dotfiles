@@ -5,12 +5,12 @@ local wezterm = require("wezterm")
 
 return {
 	-- WSL specific setting
-	-- default_domain = "WSL:Ubuntu-20.04",
+	-- default_domain = "WSL:Ubuntu",
 	-- Smart tab bar [distraction free mode]
 	hide_tab_bar_if_only_one_tab = true,
 	-- Color scheme
 	-- https://wezfurlong.org/wezterm/appearance.html
-	color_scheme = "Ayu Mirage",
+	color_scheme = "Catppuccin Mocha",
 	-- Font configuration
 	-- https://wezfurlong.org/wezterm/config/fonts.html
 	font = wezterm.font("GeistMono Nerd Font Mono", { weight = "Medium", stretch = "Normal", style = "Normal" }),
