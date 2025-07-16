@@ -2,12 +2,10 @@
 
 # --- Configuration Variables ---
 USERNAME = eduardo
-AGE_KEY_FILE = key.txt
-SECRETS_FILE = secrets.yaml
 
 # --- .PHONY Targets ---
 # Declare that targets are commands, not files.
-.PHONY: help personal work switch update secrets clean
+.PHONY: help personal work switch update clean
 
 # --- Available Commands ---
 
@@ -41,7 +39,7 @@ personal:
 ## (switch) [INTERNAL] Apply the Home Manager configuration to the current system.
 switch:
 	@echo "🔒 Applying configuration for profile: \033[33m$(PROFILE)\033[0m"
-	SOPS_AGE_KEY_FILE=$(AGE_KEY_FILE) nix run home-manager -- switch --flake .#$(USERNAME)-$(PROFILE) --impure
+	nix run home-manager -- switch --flake .#$(USERNAME)-$(PROFILE) --impure
 	@echo "✅ Configuration applied successfully!"
 
 ## (update) Update flake dependencies (nixpkgs, home-manager, etc.).
@@ -49,11 +47,6 @@ update:
 	@echo "🔄 Updating flake dependencies..."
 	nix flake update
 	@echo "⚠️ Dependencies updated. Run 'make work' or 'make personal' to apply."
-
-## (secrets) Securely edit the secrets file.
-secrets:
-	@echo "✏️  Opening editor for the secrets file..."
-	sops $(SECRETS_FILE)
 
 ## (clean) Clean up old Nix generations to free up disk space.
 clean:

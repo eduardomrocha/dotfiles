@@ -8,16 +8,12 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     catppuccin = {
       url = "github:catppuccin/nix";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, catppuccin, ... }:
+  outputs = { self, nixpkgs, home-manager, catppuccin, ... }:
     let
       system = "x86_64-linux";
       username = "eduardo";
@@ -30,7 +26,6 @@
         extraSpecialArgs = { inherit profile; };
         modules = [
           ./home.nix
-          sops-nix.homeManagerModules.sops
           catppuccin.homeModules.catppuccin
         ];
       };

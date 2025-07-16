@@ -13,11 +13,6 @@
     "$HOME/.local/bin"
   ];
 
-  # Point to the default secrets file for sops
-  sops = {
-    defaultSopsFile = ./secrets.yaml;
-  };
-
   # List of packages to install
   home.packages = with pkgs; [
     tmux
@@ -39,6 +34,8 @@
     fnm
     gnumake
     gcc
+    sops
+    age
   ];
 
   fonts.fontconfig.enable = true;
@@ -57,15 +54,6 @@
   home.sessionVariables = {
     # Common variables for all profiles
     GOPATH = "${config.home.homeDirectory}/go";
-
-    # For the 'personal' profile, it gets the secret. For 'work', it gets an empty string.
-    GEMINI_API_KEY = if profile == "personal"
-                     then "${config.sops.secrets.GEMINI_API_KEY.value}"
-                     else "";
-    BRAVE_API_KEY = if profile == "personal"
-                    then "${config.sops.secrets.BRAVE_API_KEY.value}"
-                    else "";
-
   } // lib.mkIf (profile == "work") {
     # Work-specific variables
     sts_suiterc_git_prompt = "1";
@@ -85,6 +73,11 @@
 
     ".config/wezterm" = {
       source = ./config/wezterm;
+      recursive = true;
+    };
+
+    ".config/sops" = {
+      source = ./config/sops;
       recursive = true;
     };
 
@@ -250,6 +243,11 @@
 
           sleep 0.02
         ''
+        + (if profile == "personal" then ''
+          if [[ -f "$HOME/dotfiles/load-secrets.sh" ]]; then
+            source "$HOME/dotfiles/load-secrets.sh"
+          fi
+        '' else "")
         + (if profile == "work" then ''
           # Settings that only run on the "work" profile
           if [[ -f "$HOME/.suiterc" ]]; then
