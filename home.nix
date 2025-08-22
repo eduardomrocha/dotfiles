@@ -2,8 +2,11 @@
 { config, pkgs, lib, profile, username, ... }:
 
 {
-  # Home Manager will infer the username and home directory from the environment.
-  # This makes the configuration portable.
+  # Set the username from the flake, which is required by Home Manager.
+  home.username = username;
+
+  # Let Home Manager automatically determine the home directory. This makes the
+  # configuration portable between Linux (/home/user) and macOS (/Users/user).
 
   # This is required for Home Manager to work correctly
   home.stateVersion = "24.05";
