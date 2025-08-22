@@ -15,15 +15,17 @@
 
   outputs = { self, nixpkgs, home-manager, catppuccin, ... }:
     let
-      system = "x86_64-linux";
-      username = "eduardo";
+      # Use the system evaluating the flake, making it portable to any architecture.
+      system = builtins.currentSystem;
+      # Get the username from the environment. Requires the --impure flag.
+      username = builtins.getEnv "USER";
 
       # Function to build a Home Manager configuration.
       # This avoids code repetition.
       mkHome = { profile }: home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
-        # Pass the profile name as a special argument to home.nix
-        extraSpecialArgs = { inherit profile; };
+        # Pass the profile name and username as a special arguments to home.nix
+        extraSpecialArgs = { inherit profile username; };
         modules = [
           ./home.nix
           catppuccin.homeModules.catppuccin

@@ -1,7 +1,8 @@
 # Makefile to manage the Nix environment with Flakes, Home Manager, and SOPS
 
 # --- Configuration Variables ---
-USERNAME = eduardo
+# Get the current username dynamically, making the Makefile portable.
+USERNAME := $(shell whoami)
 
 # --- .PHONY Targets ---
 # Declare that targets are commands, not files.

@@ -1,10 +1,9 @@
-# We accept the 'profile' and 'lib' arguments from flake.nix here
-{ config, pkgs, lib, profile, ... }:
+# We accept the 'profile', 'username', and 'lib' arguments from flake.nix here
+{ config, pkgs, lib, profile, username, ... }:
 
 {
-  # Set user and home directory
-  home.username = "eduardo";
-  home.homeDirectory = "/home/eduardo";
+  # Home Manager will infer the username and home directory from the environment.
+  # This makes the configuration portable.
 
   # This is required for Home Manager to work correctly
   home.stateVersion = "24.05";
