@@ -2,11 +2,10 @@
 { config, pkgs, lib, profile, username, ... }:
 
 {
-  # Set the username from the flake, which is required by Home Manager.
+  # Explicitly set username and home directory from dynamic values to ensure
+  # the configuration is portable and to resolve evaluation errors.
   home.username = username;
-
-  # Let Home Manager automatically determine the home directory. This makes the
-  # configuration portable between Linux (/home/user) and macOS (/Users/user).
+  home.homeDirectory = builtins.getEnv "HOME";
 
   # This is required for Home Manager to work correctly
   home.stateVersion = "24.05";
