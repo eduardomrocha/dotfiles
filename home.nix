@@ -140,6 +140,10 @@
         sensible
       ];
       extraConfig = ''
+        # Set zsh as the default shell and command
+        set-option -g default-shell ${pkgs.zsh}/bin/zsh
+        set-option -g default-command "${pkgs.zsh}/bin/zsh"
+
         # Unbind default prefix since we changed it
         unbind C-b
 
