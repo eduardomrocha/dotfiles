@@ -11,6 +11,7 @@
 
   home.sessionPath = [
     "$HOME/.local/bin"
+    "$HOME/go/bin"
   ];
 
   # List of packages to install
@@ -32,10 +33,9 @@
     python3
     pipx
     fnm
+    yarn
     gnumake
     gcc
-    sops
-    age
   ];
 
   fonts.fontconfig.enable = true;
@@ -73,11 +73,6 @@
 
     ".config/wezterm" = {
       source = ./config/wezterm;
-      recursive = true;
-    };
-
-    ".config/sops" = {
-      source = ./config/sops;
       recursive = true;
     };
 
@@ -243,11 +238,6 @@
 
           sleep 0.02
         ''
-        + (if profile == "personal" then ''
-          if [[ -f "$HOME/dotfiles/load-secrets.sh" ]]; then
-            source "$HOME/dotfiles/load-secrets.sh"
-          fi
-        '' else "")
         + (if profile == "work" then ''
           # Settings that only run on the "work" profile
           if [[ -f "$HOME/.suiterc" ]]; then
