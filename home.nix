@@ -12,6 +12,8 @@
 
   home.sessionPath = [
     "$HOME/.local/bin"
+    "$HOME/go/bin"
+    "$HOME/.opencode/bin"
   ];
 
   # List of packages to install
@@ -23,6 +25,7 @@
     lazygit
     lazydocker
     git
+    unzip
     ripgrep
     nerd-fonts.geist-mono
     aspellDicts.en # Dictionary dependency for nvim-cmp
@@ -33,10 +36,9 @@
     python3
     pipx
     fnm
+    yarn
     gnumake
     gcc
-    sops
-    age
   ];
 
   fonts.fontconfig.enable = true;
@@ -77,15 +79,18 @@
       recursive = true;
     };
 
-    ".config/sops" = {
-      source = ./config/sops;
+    ".config/opencode" = {
+      source = ./config/opencode;
       recursive = true;
     };
-
-    ".tmux.conf" = {
-      source = "${config.xdg.configHome}/tmux/tmux.conf";
-    };
   };
+
+  # Activation script to install opencode if not present
+  home.activation.installOpencode = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ ! -d "$HOME/.opencode" ]; then
+      $DRY_RUN_CMD bash -c "curl -fsSL https://opencode.ai/install | bash"
+    fi
+  '';
 
   catppuccin = {
     enable = true;
@@ -249,11 +254,6 @@
 
           sleep 0.02
         ''
-        + (if profile == "personal" then ''
-          if [[ -f "$HOME/dotfiles/load-secrets.sh" ]]; then
-            source "$HOME/dotfiles/load-secrets.sh"
-          fi
-        '' else "")
         + (if profile == "work" then ''
           # Settings that only run on the "work" profile
           if [[ -f "$HOME/.suiterc" ]]; then
