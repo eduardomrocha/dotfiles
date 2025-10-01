@@ -12,6 +12,7 @@
   home.sessionPath = [
     "$HOME/.local/bin"
     "$HOME/go/bin"
+    "$HOME/.opencode/bin"
   ];
 
   # List of packages to install
@@ -76,7 +77,19 @@
       source = ./config/wezterm;
       recursive = true;
     };
+
+    ".config/opencode" = {
+      source = ./config/opencode;
+      recursive = true;
+    };
   };
+
+  # Activation script to install opencode if not present
+  home.activation.installOpencode = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ ! -d "$HOME/.opencode" ]; then
+      $DRY_RUN_CMD bash -c "curl -fsSL https://opencode.ai/install | bash"
+    fi
+  '';
 
   catppuccin = {
     enable = true;
