@@ -243,7 +243,6 @@
           COMPLETION_WAITING_DOTS="true"
           export UPDATE_ZSH_DAYS=7
           export HIST_TIME_FORMAT="%d.%m.%Y "
-          export SOPS_AGE_KEY_FILE=$HOME/.config/sops/age/keys.txt
 
           # FNM (Fast Node Manager) initialization
           eval "$(fnm env --use-on-cd)"
