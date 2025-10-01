@@ -23,6 +23,7 @@
     lazygit
     lazydocker
     git
+    unzip
     ripgrep
     nerd-fonts.geist-mono
     aspellDicts.en # Dictionary dependency for nvim-cmp
@@ -74,10 +75,6 @@
     ".config/wezterm" = {
       source = ./config/wezterm;
       recursive = true;
-    };
-
-    ".tmux.conf" = {
-      source = "${config.xdg.configHome}/tmux/tmux.conf";
     };
   };
 
