@@ -1,46 +1,30 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "ollama/qwen2.5-coder:32b",
-  "small_model": "ollama/qwen2.5-coder:7b",
-  "theme": "tokyonight",
-  "autoupdate": true,
+  "model": "anthropic/claude-sonnet-4-20250514",
   "provider": {
-    "ollama": {
-      "options": {
-        "baseURL": "http://localhost:11434"
-      },
+    "anthropic": {
       "models": {
-        "qwen2.5-coder:32b": {
-          "name": "Qwen 32B - Standard Coding"
-        },
-        "qwen2.5-coder:7b": {
-          "name": "Qwen 7B - Quick Tasks"
+        "claude-sonnet-4-20250514": {
+          "options": {
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 16000
+            },
+            "temperature": 0.7
+          }
         }
       }
     },
-    "anthropic": {
-      "models": {},
-      "options": {
-        "apiKey": "{env:ANTHROPIC_API_KEY}"
+    "google": {
+      "models": {
+        "gemini-2.5-flash": {
+          "options": {
+            "temperature": 0.7,
+            "topP": 0.95,
+            "maxOutputTokens": 8192
+          }
+        }
       }
     }
-  },
-  "agent": {
-    "quick": {
-      "description": "Quick tasks - comments, formatting, simple snippets",
-      "model": "ollama/qwen2.5-coder:7b"
-    },
-    "code": {
-      "description": "Standard coding - features, CRUD, APIs",
-      "model": "ollama/qwen2.5-coder:32b"
-    },
-    "expert": {
-      "description": "Architecture, security, complex debugging, code review",
-      "model": "anthropic/claude-sonnet-4-5-20250929"
-    }
-  },
-  "permission": {
-    "edit": "ask",
-    "bash": "ask"
   }
 }
