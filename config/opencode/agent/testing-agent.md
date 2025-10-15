@@ -1,6 +1,6 @@
 ---
 description: Test writer for simple scenarios like happy path tests, basic CRUD tests, straightforward unit tests, and standard validation tests. Use for routine test coverage.
-model: google/gemini-2.5-flash
+model: google/gemini-2.5-flash-preview-09-2025
 tools:
   read: true
   write: true
@@ -38,10 +38,10 @@ describe('ComponentName', () => {
   it('should [expected behavior] when [condition]', () => {
     // Arrange
     const input = createTestData();
-    
+
     // Act
     const result = functionUnderTest(input);
-    
+
     // Assert
     expect(result).toBe(expectedValue);
   });

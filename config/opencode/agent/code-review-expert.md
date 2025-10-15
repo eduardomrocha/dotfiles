@@ -1,6 +1,6 @@
 ---
 description: Expert code reviewer for complex tasks like security vulnerabilities, architectural issues, performance bottlenecks, concurrency problems, and advanced algorithms. Use for security-critical or architecturally significant code.
-model: anthropic/claude-sonnet-4-20250514
+model: anthropic/claude-sonnet-4-5-20250929
 tools:
   read: true
   grep: true
@@ -63,7 +63,7 @@ For each issue:
 - **Location**: `file.ts:123`
 - **Problem**: [Detailed explanation]
 - **Impact**: [Security/Performance/Reliability impact]
-- **Fix**: 
+- **Fix**:
   ```typescript
   // Recommended solution
   ```

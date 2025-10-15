@@ -1,6 +1,6 @@
 ---
 description: Developer for simple tasks like CRUD operations, basic forms, utility functions, simple bug fixes, and straightforward features. Use for routine development work.
-model: google/gemini-2.5-flash
+model: google/gemini-2.5-flash-preview-09-2025
 tools:
   read: true
   write: true

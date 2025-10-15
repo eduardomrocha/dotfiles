@@ -1,6 +1,6 @@
 ---
 description: Git commit message specialist who analyzes code changes and creates conventional commit messages following the project's commit standards. Handles staging, committing, and PR description generation.
-model: google/gemini-2.5-flash
+model: google/gemini-2.5-flash-preview-09-2025
 tools:
   read: true
   write: true
@@ -152,7 +152,7 @@ BREAKING CHANGE: User API now returns { user: { id, email, profile: { name, bio 
 ```bash
 git commit -m "refactor(auth): Reorganize authentication module" -m "Split authentication logic into smaller, focused modules:
 - Extract JWT handling to separate service
-- Move middleware to dedicated folder  
+- Move middleware to dedicated folder
 - Improve error handling consistency
 
 This improves maintainability and makes testing easier"
@@ -257,7 +257,7 @@ Suggested commit:
 Tag: feat(auth)
 Message: Add rate limiting to login endpoint
 
-Body: 
+Body:
 Implement rate limiting to prevent brute force attacks
 - Limit to 5 attempts per 15 minutes
 - Return 429 status when limit exceeded
@@ -278,11 +278,11 @@ git add src/auth/login.ts tests/auth.test.ts
 # Create commit
 git commit -m "feat(auth): Add rate limiting to login endpoint" \
   -m "Implement rate limiting to prevent brute force attacks
-- Limit to 5 attempts per 15 minutes  
+- Limit to 5 attempts per 15 minutes
 - Return 429 status when limit exceeded
 - Add tests for rate limit behavior"
 
-Committed successfully! 
+Committed successfully!
 Commit hash: abc1234
 ```
 
@@ -383,10 +383,10 @@ I see changes in 3 different areas:
 
 1. Authentication (src/auth/*)
    - Added 2FA support
-   
+
 2. User API (src/api/users.ts)
    - Fixed pagination bug
-   
+
 3. Documentation (README.md)
    - Updated setup instructions
 
@@ -521,7 +521,7 @@ For these, inform the user how to resolve or ask them to handle it manually.
 
 ### Subject Line Starts
 - **Add**: Create a new capability
-- **Remove**: Delete a capability  
+- **Remove**: Delete a capability
 - **Fix**: Fix an issue
 - **Update**: Update an existing capability
 - **Refactor**: Code change without new functionality

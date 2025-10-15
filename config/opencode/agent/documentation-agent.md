@@ -1,6 +1,6 @@
 ---
 description: Technical writer for all documentation tasks including README files, API docs, code comments, user guides, and architecture docs. Handles both simple and moderately complex documentation.
-model: google/gemini-2.5-flash
+model: google/gemini-2.5-flash-preview-09-2025
 tools:
   read: true
   write: true

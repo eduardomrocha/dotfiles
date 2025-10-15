@@ -1,6 +1,6 @@
 ---
 description: Expert test engineer for complex scenarios like edge cases, concurrency tests, integration tests, performance tests, and complex mocking. Use for critical or complex testing needs.
-model: anthropic/claude-sonnet-4-20250514
+model: anthropic/claude-sonnet-4-5-20250929
 tools:
   read: true
   write: true
@@ -81,18 +81,18 @@ describe('BankAccount - Concurrent Withdrawals', () => {
     const account = new BankAccount(1000);
     const withdrawalAmount = 100;
     const concurrentOps = 5;
-    
+
     // Act - Simulate concurrent withdrawals
     const promises = Array(concurrentOps)
       .fill(null)
       .map(() => account.withdraw(withdrawalAmount));
-    
+
     const results = await Promise.allSettled(promises);
-    
+
     // Assert
     const successful = results.filter(r => r.status === 'fulfilled').length;
     const finalBalance = await account.getBalance();
-    
+
     expect(finalBalance).toBe(1000 - (successful * withdrawalAmount));
     expect(finalBalance).toBeGreaterThanOrEqual(0); // No overdraft
   });

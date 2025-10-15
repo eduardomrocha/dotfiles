@@ -1,6 +1,6 @@
 ---
 description: Code reviewer for simple tasks like style checks, formatting issues, basic linting, obvious bugs, and naming conventions. Use for routine code quality checks.
-model: google/gemini-2.5-flash
+model: google/gemini-2.5-flash-preview-09-2025
 tools:
   read: true
   grep: true

@@ -1,6 +1,6 @@
 ---
 description: DevOps engineer for all deployment tasks including Docker configs, CI/CD pipelines, cloud deployments, and infrastructure scripts. Handles both simple and moderately complex deployments.
-model: google/gemini-2.5-flash
+model: google/gemini-2.5-flash-preview-09-2025
 tools:
   read: true
   write: true

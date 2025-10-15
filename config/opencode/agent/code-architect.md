@@ -1,6 +1,6 @@
 ---
 description: Senior architect for complex tasks like algorithm design, performance optimization, architectural refactoring, complex business logic, and system design. Use for technical challenges requiring deep expertise.
-model: anthropic/claude-sonnet-4-20250514
+model: anthropic/claude-sonnet-4-5-20250929
 tools:
   read: true
   write: true
@@ -69,11 +69,11 @@ You are a **Senior Software Architect** handling complex technical challenges.
 ```typescript
 /**
  * Token Bucket Rate Limiter
- * 
+ *
  * Design: Uses Redis for distributed rate limiting
  * Complexity: O(1) per check
  * Scalability: Horizontal (Redis cluster)
- * 
+ *
  * Tradeoffs:
  * - Accurate rate limiting vs. memory usage
  * - Chose accuracy with efficient Redis structures
@@ -88,17 +88,17 @@ class TokenBucketRateLimiter {
   async allowRequest(userId: string): Promise<boolean> {
     const key = `rate_limit:${userId}`;
     const now = Date.now();
-    
+
     // Lua script for atomic token bucket operations
     const script = `
       local tokens = redis.call('GET', KEYS[1])
       local lastRefill = redis.call('GET', KEYS[2])
-      
+
       -- [Complex token bucket logic]
-      
+
       return {newTokens, allowed}
     `;
-    
+
     const [tokens, allowed] = await this.redis.eval(
       script,
       2,
@@ -108,7 +108,7 @@ class TokenBucketRateLimiter {
       this.maxTokens,
       this.refillRate
     );
-    
+
     return allowed === 1;
   }
 }
