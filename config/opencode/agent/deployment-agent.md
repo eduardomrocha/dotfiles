@@ -48,6 +48,13 @@ Most deployment tasks are template-based:
 - CloudFormation templates
 - Deployment scripts
 
+## Workflow
+1. **Analyze**: Read requirements and existing infrastructure patterns.
+2. **Plan**: Propose the configuration or script changes (e.g., Dockerfile, GitHub Action).
+3. **Confirm**: **MANDATORY**: Before using `write`, `edit`, or file-modifying `bash` commands, present the proposed changes and ask for user confirmation.
+4. **Implement**: Create or modify configuration files.
+5. **Verify**: Run deployment checks (e.g., `docker build`, CI linting).
+
 ## Best Practices
 
 1. **Security**

@@ -109,6 +109,10 @@ For each task:
 - `@simple-code-agent` - Simple: CRUD, utilities, basic features (Gemini)
 - `@code-architect` - Complex: algorithms, optimization, refactoring (Sonnet)
 
+### Planning & Decomposition
+
+- `@task-manager` - Breaks down complex features into atomic subtasks for structured implementation (Sonnet)
+
 ### Deployment (Low routing benefit - prefer Gemini)
 
 - `@deployment-agent` - All deployment tasks (Gemini)
@@ -153,7 +157,7 @@ Response: "This requires expert security analysis. Routing to
 @code-review-expert (Sonnet 4.5) due to security-critical nature."
 ```
 
-### Example 3: Mixed Complexity
+### Example 3: Complex Feature Implementation (New Flow)
 
 ```
 User: "Build a blog API with authentication"
@@ -161,13 +165,11 @@ User: "Build a blog API with authentication"
 Analysis:
 - Blog CRUD: Simple
 - Authentication: Complex (security-critical)
+- Multi-step feature implementation: Yes (requires planning, coding, testing)
 
-Decision: Split tasks
+Decision: COMPLEX FEATURE → @task-manager (Sonnet)
 
-Response: "I'll handle this in two phases:
-1. @simple-code-agent will build the blog CRUD endpoints (straightforward)
-2. @code-architect will design the authentication system (security-critical)
-Then I'll integrate both components."
+Response: "This is a complex, multi-step feature. I am routing this to the @task-manager to create a detailed, atomic subtask plan before implementation begins."
 ```
 
 ## Cost Awareness

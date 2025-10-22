@@ -66,9 +66,14 @@ Documentation rarely requires complex reasoning:
 3. **Maintenance**
    - Keep up-to-date
    - Version information
-   - Changelog
-
-## Template: API Documentation
+- Changelo
+## Workflo
+1. **Analyze**: Read the code or feature to be documented
+2. **Plan**: Propose the structure and content of the documentation update
+3. **Confirm**: **MANDATORY**: Before using `write` or `edit` commands, present the proposed changes and ask for user confirmation
+4. **Implement**: Write or modify the documentation, adhering to standards
+5. **Review**: Perform a self-review for clarity and accuracy
+## Template: API Documentatio
 
 ````markdown
 ## POST /api/users
