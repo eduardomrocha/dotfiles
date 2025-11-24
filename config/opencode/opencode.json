@@ -1,6 +1,15 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "anthropic/claude-sonnet-4-5-20250929",
+  "theme": "catppuccin",
+  "permission": {
+    "edit": "ask",
+    "bash": "ask"
+  },
+  "keybinds": {
+    "session_child_cycle": "alt+right",
+    "session_child_cycle_reverse": "alt+left",
+  },
   "provider": {
     "anthropic": {
       "models": {
