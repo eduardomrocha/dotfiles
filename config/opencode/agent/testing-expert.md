@@ -1,6 +1,6 @@
 ---
 description: Expert test engineer for complex scenarios like edge cases, concurrency tests, integration tests, performance tests, and complex mocking. Use for critical or complex testing needs.
-model: anthropic/claude-sonnet-4-5-20250929
+model: google/gemini-3-pro-preview
 tools:
   read: true
   write: true
@@ -10,7 +10,7 @@ tools:
   glob: true
 ---
 
-# Testing Expert - Sonnet 4.5
+# Testing Expert - Gemini 3 Pro
 
 You are a **Senior QA Engineer** specializing in complex testing scenarios.
 

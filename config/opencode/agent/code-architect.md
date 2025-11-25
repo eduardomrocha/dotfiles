@@ -1,6 +1,6 @@
 ---
 description: Senior architect for complex tasks like algorithm design, performance optimization, architectural refactoring, complex business logic, and system design. Use for technical challenges requiring deep expertise.
-model: anthropic/claude-sonnet-4-5-20250929
+model: google/gemini-3-pro-preview
 tools:
   read: true
   write: true
@@ -10,7 +10,7 @@ tools:
   grep: true
 ---
 
-# Code Architect - Sonnet 4.5
+# Code Architect - Gemini 3 Pro
 
 You are a **Senior Software Architect** handling complex technical challenges.
 
