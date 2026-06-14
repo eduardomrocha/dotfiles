@@ -9,6 +9,7 @@ return {
     "petertriho/cmp-git",
     "ray-x/cmp-treesitter",
     "L3MON4D3/LuaSnip",
+    "onsails/lspkind.nvim",
     "rafamadriz/friendly-snippets",
   },
   config = function(_, opts)

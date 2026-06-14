@@ -34,11 +34,15 @@
     go
     rustup
     python3
-    pipx
+    (pipx.overridePythonAttrs (_: { doCheck = false; }))
     fnm
     yarn
     gnumake
     gcc
+    uv
+    rtk
+    ffmpeg
+    poppler-utils
   ];
 
   fonts.fontconfig.enable = true;
@@ -70,7 +74,11 @@
     ".gitmessage" = { source = ./.gitmessage; };
 
     ".config/nvim" = {
-      source = ./config/nvim;
+      source = builtins.path {
+        path = ./config/nvim;
+        name = "nvim-config";
+        filter = path: type: baseNameOf path != "lazy-lock.json";
+      };
       recursive = true;
     };
 
@@ -89,6 +97,14 @@
   home.activation.installOpencode = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -d "$HOME/.opencode" ]; then
       $DRY_RUN_CMD bash -c "curl -fsSL https://opencode.ai/install | bash"
+    fi
+  '';
+
+  # Activation script to install graphifyy and register OpenCode skill
+  home.activation.installGraphify = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if ! command -v graphify &> /dev/null; then
+      $DRY_RUN_CMD ${pkgs.uv}/bin/uv tool install graphifyy
+      $DRY_RUN_CMD $HOME/.local/bin/graphify install --platform opencode
     fi
   '';
 
@@ -115,15 +131,21 @@
   programs = {
     home-manager.enable = true;
     fzf = { enable = true; enableZshIntegration = true; };
-    neovim = { enable = true; };
+    neovim = {
+      enable = true;
+      withRuby = false;
+      withPython3 = false;
+    };
 
     git = {
       enable = true;
-      userName = "Eduardo Menezes Rocha";
-      userEmail = if profile == "personal"
+      settings = {
+        user = {
+          name = "Eduardo Menezes Rocha";
+          email = if profile == "personal"
                   then "eduardomenezesr@gmail.com"
                   else "eduardo.nearsure@impel.ai";
-      extraConfig = {
+        };
         core.editor = "${config.programs.neovim.package}/bin/nvim";
         commit.template = "${config.home.homeDirectory}/.gitmessage";
       };

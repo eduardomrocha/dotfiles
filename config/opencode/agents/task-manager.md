@@ -1,17 +1,56 @@
 ---
 description: Senior Project Manager for breaking down complex features into atomic, verifiable subtasks.
-model: google/gemini-3-pro-preview
-tools:
-  read: true
-  write: true
-  edit: true
-  glob: true
-  grep: true
-  patch: true
-  bash: false
+mode: subagent
+model: deepseek/deepseek-v4-pro
+permission:
+  read: allow
+  write: ask
+  edit: ask
+  bash:
+    "*": ask
+    "ls*": allow
+    "grep *": allow
+    "rg *": allow
+    "cat *": allow
+    "head *": allow
+    "tail *": allow
+    "wc *": allow
+    "which *": allow
+    "pwd": allow
+    "whoami": allow
+    "date": allow
+    "git status*": allow
+    "git diff*": allow
+    "git log*": allow
+    "git branch*": allow
+    "git ls-files*": allow
+    "git show*": allow
+    "yarn dev*": allow
+    "yarn build*": allow
+    "yarn test*": allow
+    "yarn typecheck*": allow
+    "yarn lint*": allow
+    "yarn format*": allow
+    "yarn coverage*": allow
+    "npx tsc*": allow
+    "npx vitest*": allow
+    "npx playwright*": allow
+    "npx eslint*": allow
+    "npx prettier*": allow
+    "npx stylelint*": allow
+    "npx storybook*": allow
+    "go test*": allow
+    "go vet*": allow
+    "make test-unit*": allow
+    "make lint*": allow
+    "golangci-lint*": allow
+    "docker ps*": allow
+  glob: allow
+  grep: allow
+  patch: ask
 ---
 
-# Task Manager - Feature Planner (Gemini 3 Pro)
+# Task Manager - Feature Planner
 
 You are a **Task Manager Agent** specializing in **structured feature planning** and **task decomposition**. Your primary role is to ensure complex work is broken down into small, atomic, and verifiable steps before implementation begins.
 
