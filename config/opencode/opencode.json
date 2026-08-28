@@ -1,15 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "deepseek/deepseek-v4-flash",
-  "instructions": [
-    "instructions/tdd.md",
-    "instructions/basics.md",
-    "instructions/coding-steps.md"
-  ],
-  "plugin": [
-    "ecc-universal",
-    "superpowers@git+https://github.com/obra/superpowers.git"
-  ],
   "permission": {
     "edit": "allow",
     "bash": "allow"
@@ -34,32 +25,5 @@
         }
       }
     }
-  },
-  "agent": {
-    "planner":               { "model": "deepseek/deepseek-v4-pro" },
-    "architect":             { "model": "deepseek/deepseek-v4-pro" },
-    "code-reviewer":         { "model": "deepseek/deepseek-v4-pro" },
-    "security-reviewer":     { "model": "deepseek/deepseek-v4-pro" },
-    "database-reviewer":     { "model": "deepseek/deepseek-v4-pro" },
-    "go-reviewer":           { "model": "deepseek/deepseek-v4-pro" },
-    "cpp-reviewer":          { "model": "deepseek/deepseek-v4-pro" },
-    "python-reviewer":       { "model": "deepseek/deepseek-v4-pro" },
-    "java-reviewer":         { "model": "deepseek/deepseek-v4-pro" },
-    "kotlin-reviewer":       { "model": "deepseek/deepseek-v4-pro" },
-    "php-reviewer":          { "model": "deepseek/deepseek-v4-pro" },
-    "rust-reviewer":         { "model": "deepseek/deepseek-v4-pro" },
-    "harness-optimizer":     { "model": "deepseek/deepseek-v4-pro" },
-    "cpp-build-resolver":    { "model": "deepseek/deepseek-v4-pro" },
-    "rust-build-resolver":   { "model": "deepseek/deepseek-v4-pro" },
-    "tdd-guide":             { "model": "deepseek/deepseek-v4-flash" },
-    "build-error-resolver":  { "model": "deepseek/deepseek-v4-flash" },
-    "e2e-runner":            { "model": "deepseek/deepseek-v4-flash" },
-    "doc-updater":           { "model": "deepseek/deepseek-v4-flash" },
-    "refactor-cleaner":      { "model": "deepseek/deepseek-v4-flash" },
-    "go-build-resolver":     { "model": "deepseek/deepseek-v4-flash" },
-    "java-build-resolver":   { "model": "deepseek/deepseek-v4-flash" },
-    "kotlin-build-resolver": { "model": "deepseek/deepseek-v4-flash" },
-    "loop-operator":         { "model": "deepseek/deepseek-v4-flash" },
-    "docs-lookup":           { "model": "deepseek/deepseek-v4-flash" }
   }
 }

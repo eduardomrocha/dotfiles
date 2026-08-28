@@ -57,7 +57,7 @@ return {
     "AstroNvim/astrolsp",
     opts = function(_, opts)
       opts.config = opts.config or {}
-      opts.config.sqls = false
+      opts.config.sqls = {}
     end,
   },
   {

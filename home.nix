@@ -1,5 +1,5 @@
 # We accept the 'profile', 'username', and 'lib' arguments from flake.nix here
-{ config, pkgs, lib, profile, username, ... }:
+{ config, pkgs, pkgs-neovim, lib, profile, username, ... }:
 
 {
   # Explicitly set username and home directory from dynamic values to ensure
@@ -43,6 +43,8 @@
     rtk
     ffmpeg
     poppler-utils
+    isort
+    mypy
   ];
 
   fonts.fontconfig.enable = true;
@@ -100,14 +102,6 @@
     fi
   '';
 
-  # Activation script to install graphifyy and register OpenCode skill
-  home.activation.installGraphify = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if ! command -v graphify &> /dev/null; then
-      $DRY_RUN_CMD ${pkgs.uv}/bin/uv tool install graphifyy
-      $DRY_RUN_CMD $HOME/.local/bin/graphify install --platform opencode
-    fi
-  '';
-
   catppuccin = {
     enable = true;
     flavor = "mocha";
@@ -135,6 +129,7 @@
       enable = true;
       withRuby = false;
       withPython3 = false;
+      package = pkgs-neovim.neovim-unwrapped;
     };
 
     git = {

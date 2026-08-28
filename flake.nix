@@ -4,6 +4,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-neovim.url = "github:nixos/nixpkgs/a1bab9e494f5f4939442a57a58d0449a109593fe";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, catppuccin, ... }:
+  outputs = { self, nixpkgs, nixpkgs-neovim, home-manager, catppuccin, ... }:
     let
       # Use the system evaluating the flake, making it portable to any architecture.
       system = builtins.currentSystem;
@@ -25,7 +26,10 @@
       mkHome = { profile }: home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
         # Pass the profile name and username as a special arguments to home.nix
-        extraSpecialArgs = { inherit profile username; };
+        extraSpecialArgs = {
+          inherit profile username;
+          pkgs-neovim = nixpkgs-neovim.legacyPackages.${system};
+        };
         modules = [
           ./home.nix
           catppuccin.homeModules.catppuccin
